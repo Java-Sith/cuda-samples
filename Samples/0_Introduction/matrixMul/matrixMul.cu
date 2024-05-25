@@ -311,7 +311,7 @@ int main(int argc, char **argv) {
   // override the device ID based on input provided at the command line
   int dev = findCudaDevice(argc, (const char **)argv);
 
-  int block_size = getCmdLineArgumentInt(argc, (const char **)argv, "hA");
+  int block_size = 1;
 
   dim3 dimsA(5 * 2 * block_size, 5 * 2 * block_size, 1);
   dim3 dimsB(5 * 4 * block_size, 5 * 2 * block_size, 1);
