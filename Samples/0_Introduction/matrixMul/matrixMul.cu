@@ -194,13 +194,15 @@ int MatrixMultiply(int argc, char **argv,
   printf("Computing result using CUDA Kernel...\n");
 
   // Performs warmup operation using matrixMul CUDA kernel
-  if (block_size == 16) {
+ /* if (block_size == 16) {
     MatrixMulCUDA<16>
         <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
   } else {
     MatrixMulCUDA<32>
         <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
-  }
+  }*/
+  MatrixMulCUDA<block_size>
+        <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
 
   printf("done\n");
   checkCudaErrors(cudaStreamSynchronize(stream));
@@ -209,16 +211,18 @@ int MatrixMultiply(int argc, char **argv,
   checkCudaErrors(cudaEventRecord(start, stream));
 
   // Execute the kernel
-  int nIter = 300;
+  int nIter = 30;
 
   for (int j = 0; j < nIter; j++) {
-    if (block_size == 16) {
+    /*if (block_size == 16) {
       MatrixMulCUDA<16>
           <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
     } else {
       MatrixMulCUDA<32>
           <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
-    }
+    }*/
+    MatrixMulCUDA<block_size>
+          <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
   }
 
   // Record the stop event
@@ -311,7 +315,7 @@ int main(int argc, char **argv) {
   // override the device ID based on input provided at the command line
   int dev = findCudaDevice(argc, (const char **)argv);
 
-  int block_size = 32;
+  int block_size = getCmdLineArgumentInt(argc, (const char **)argv, "hA");
 
   dim3 dimsA(5 * 2 * block_size, 5 * 2 * block_size, 1);
   dim3 dimsB(5 * 4 * block_size, 5 * 2 * block_size, 1);
