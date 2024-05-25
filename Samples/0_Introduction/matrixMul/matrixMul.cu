@@ -194,14 +194,14 @@ int MatrixMultiply(int argc, char **argv,
   printf("Computing result using CUDA Kernel...\n");
 
   // Performs warmup operation using matrixMul CUDA kernel
- /* if (block_size == 16) {
-    MatrixMulCUDA<16>
+  if (block_size == 1) {
+    MatrixMulCUDA<1>
         <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
   } else {
-    MatrixMulCUDA<32>
+    MatrixMulCUDA<2>
         <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
-  }*/
-  MatrixMulCUDA<block_size>
+  }
+  //MatrixMulCUDA<block_size>
         <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
 
   printf("done\n");
@@ -214,15 +214,13 @@ int MatrixMultiply(int argc, char **argv,
   int nIter = 30;
 
   for (int j = 0; j < nIter; j++) {
-    /*if (block_size == 16) {
-      MatrixMulCUDA<16>
+    if (block_size == 1) {
+      MatrixMulCUDA<1>
           <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
     } else {
-      MatrixMulCUDA<32>
+      MatrixMulCUDA<2>
           <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
-    }*/
-    MatrixMulCUDA<block_size>
-          <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
+    }
   }
 
   // Record the stop event
