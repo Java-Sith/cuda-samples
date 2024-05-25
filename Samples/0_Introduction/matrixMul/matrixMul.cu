@@ -201,8 +201,6 @@ int MatrixMultiply(int argc, char **argv,
     MatrixMulCUDA<2>
         <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
   }
-  //MatrixMulCUDA<block_size>
-        <<<grid, threads, 0, stream>>>(d_C, d_A, d_B, dimsA.x, dimsB.x);
 
   printf("done\n");
   checkCudaErrors(cudaStreamSynchronize(stream));
