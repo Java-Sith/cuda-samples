@@ -14,13 +14,6 @@ void generateMatrix(float* matrix, int rows, int cols) {
 
 // Function to multiply two matrices
 void multiplyMatrices(const float* matrixA, const float* matrixB, float* matrixC, int M, int N, int K) {
-    // Initialize the result matrix with zeros
-    for (int i = 0; i < M; ++i) {
-        for (int j = 0; j < N; ++j) {
-            matrixC[i * N + j] = 0.0f;
-        }
-    }
-
     // Perform matrix multiplication
     for (int i = 0; i < M; ++i) {
         for (int j = 0; j < N; ++j) {
